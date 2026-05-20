@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Hero from "./components/Hero";
-import FeaturesSection from "./components/FeaturesSection";
+import WhyChooseUs from "./components/WhyChooseUs";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero></Hero>
-      <FeaturesSection></FeaturesSection>
+      <WhyChooseUs></WhyChooseUs>
     </div>
   );
 }
