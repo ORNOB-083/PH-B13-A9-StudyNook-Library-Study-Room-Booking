@@ -1,9 +1,9 @@
 import RoomsClient from '../components/RoomsClient';
 
 async function getAllRooms() {
-  const res = await fetch('http://localhost:8000/rooms', { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms`, { cache: 'no-store' });
   const data = await res.json();
-  return data;
+  return data || [];
 }
 
 export const metadata = {

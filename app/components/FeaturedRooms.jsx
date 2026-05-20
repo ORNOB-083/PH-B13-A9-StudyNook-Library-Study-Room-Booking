@@ -1,7 +1,7 @@
 import FeaturedRoomsClient from './FeaturedRoomsClient';
 
 async function getRooms() {
-  const res = await fetch('http://localhost:8000/rooms', { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms`, {cache: 'no-store'});
   const data = await res.json();
   return data.slice(0, 6);
 }
