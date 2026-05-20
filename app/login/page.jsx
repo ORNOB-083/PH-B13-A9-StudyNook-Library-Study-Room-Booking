@@ -1,166 +1,278 @@
-"use client";
+'use client';
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
+import { authClient } from '../../lib/auth-client';
+import { FcGoogle } from 'react-icons/fc';
+import { HiEye, HiEyeOff, HiArrowRight } from 'react-icons/hi';
+import { MdEmail, MdLock } from 'react-icons/md';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Check } from "lucide-react";
-import {
-    Button,
-    Card,
-    Description,
-    FieldError,
-    Form,
-    Input,
-    Label,
-    TextField,
-} from "@heroui/react";
-import { GrGoogle } from "react-icons/gr";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "react-toastify";
-export default function SignInPage() {
-    const router = useRouter();
+function FloatingInput({ id, label, type = 'text', value, onChange, icon: Icon, extra }) {
+  const [focused, setFocused] = useState(false);
+  const active = focused || value.length > 0;
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-
-        console.log("Login attempt:", { email, password });
-
-        try {
-            const { data, error } = await authClient.signIn.email({
-                email,
-                password,
-                callbackURL: "/",
-            });
-
-            console.log({ data, error });
-
-            if (!error) {
-                toast.success("✅ Welcome back!");
-            } else {
-                toast.error(error.message || "Login failed. Please check your credentials.");
+  return (
+    <div className="relative">
+      <label
+        htmlFor={id}
+        className={`relative flex items-center gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white cursor-text transition-all duration-300 ${
+          focused
+            ? 'border-[#1D3557] shadow-md'
+            : 'border-[#A8DADC]/50 hover:border-[#457B9D]/70 hover:shadow-sm'
+        }`}
+      >
+        <Icon
+          size={20}
+          className={`shrink-0 transition-colors duration-300 mt-0.5 ${
+            focused ? 'text-[#1D3557]' : 'text-[#457B9D]'
+          }`}
+        />
+        <div className="flex-1 relative min-w-0">
+          <motion.span
+            animate={
+              active
+                ? { y: -14, scale: 0.75, color: focused ? '#1D3557' : '#457B9D' }
+                : { y: 2, scale: 1, color: '#94a3b8' }
             }
-        } catch (err) {
-            console.error("Unexpected error:", err);
-            toast.error("Something went wrong. Please try again later.");
-        }
-    };
-
-    const handleGoogleSignIn = async () => {
-        try {
-            await authClient.signIn.social({
-                provider: "google",
-            });
-            toast.success("✅ Signed in with Google!");
-        } catch (err) {
-            console.error("Google sign-in error:", err);
-            toast.error("Google sign-in failed. Please try again.");
-        }
-    };
-
-    return (
-        <div className="min-h-screen bg-[#1a2438] flex items-center justify-center py-10 px-4">
-            <Card className="w-full max-w-md border border-[#4a3d34] bg-[#1a2438] py-8 px-6">
-                <h1 className="text-center text-3xl font-bold text-[#b79c8d] mb-6">
-                    Welcome Back
-                </h1>
-
-                <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
-                    <TextField
-                        isRequired
-                        name="email"
-                        type="email"
-                        validate={(value) => {
-                            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-                                return "Please enter a valid email address";
-                            }
-                            return null;
-                        }}
-                    >
-                        <Label className="text-[#b79c8d]">Email</Label>
-                        <Input
-                            placeholder="john@example.com"
-                            className="bg-[#4a3d34] text-[#b79c8d] border-[#8b756c] focus:border-[#b79c8d]"
-                        />
-                        <FieldError className="text-red-400" />
-                    </TextField>
-
-                    <TextField
-                        isRequired
-                        minLength={8}
-                        name="password"
-                        type="password"
-                        validate={(value) => {
-                            if (value.length < 8) {
-                                return "Password must be at least 8 characters";
-                            }
-                            if (!/[A-Z]/.test(value)) {
-                                return "Password must contain at least one uppercase letter";
-                            }
-                            if (!/[0-9]/.test(value)) {
-                                return "Password must contain at least one number";
-                            }
-                            return null;
-                        }}
-                    >
-                        <Label className="text-[#b79c8d]">Password</Label>
-                        <Input
-                            placeholder="Enter your password"
-                            className="bg-[#4a3d34] text-[#b79c8d] border-[#8b756c] focus:border-[#b79c8d]"
-                        />
-                        <Description className="text-[#8b756c]">
-                            At least 8 characters with 1 uppercase and 1 number
-                        </Description>
-                        <FieldError className="text-red-400" />
-                    </TextField>
-
-                    <div className="flex gap-2 mt-2">
-                        <Button
-                            type="submit"
-                            className="flex-1 bg-[#b79c8d] text-[#1a2438] hover:bg-[#8b756c]"
-                        >
-                            <Check className="mr-2 h-4 w-4" />
-                            Sign In
-                        </Button>
-                        <Button
-                            type="reset"
-                            variant="bordered"
-                            className="border-[#4a3d34] text-[#b79c8d] hover:bg-[#4a3d34]"
-                        >
-                            Reset
-                        </Button>
-                    </div>
-                </Form>
-
-                <div className="relative my-6">
-                    <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[#4a3d34]" />
-                    </div>
-                    <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-[#1a2438] text-[#8b756c]">or</span>
-                    </div>
-                </div>
-
-                <Button
-                    onClick={handleGoogleSignIn}
-                    variant="bordered"
-                    className="w-full border-[#4a3d34] text-[#b79c8d] hover:bg-[#4a3d34]"
-                >
-                    <GrGoogle className="mr-2" />
-                    Sign In with Google
-                </Button>
-
-                <p className="mt-6 text-center text-sm text-[#8b756c]">
-                    Don&apos;t have an account?{" "}
-                    <Link
-                        href="/signup"
-                        className="text-[#b79c8d] hover:underline font-semibold"
-                    >
-                        Sign Up
-                    </Link>
-                </p>
-            </Card>
+            transition={{ type: 'spring', stiffness: 280, damping: 25 }}
+            className="absolute left-0 text-sm font-medium pointer-events-none select-none origin-left"
+          >
+            {label}
+          </motion.span>
+          <input
+            id={id}
+            type={type}
+            value={value}
+            onChange={onChange}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            required
+            className="w-full bg-transparent text-base text-[#1D3557] outline-none pt-5 font-medium caret-[#1D3557]"
+            placeholder=" "
+          />
         </div>
-    );
+        {extra && (
+          <div className="shrink-0" onClick={e => e.stopPropagation()}>
+            {extra}
+          </div>
+        )}
+      </label>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+  const cardRef = useRef(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [4, -4]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-4, 4]);
+
+  const handleMouseMove = (e) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    const { data, error } = await authClient.signIn.email({
+      email,
+      password,
+      callbackURL: '/',
+    });
+    if (!error) {
+      toast.success('Welcome back!');
+      router.push('/');
+    } else {
+      setError(error.message || 'Invalid email or password');
+    }
+    setLoading(false);
+  };
+
+  const handleGoogle = async () => {
+    try {
+      await authClient.signIn.social({ provider: 'google' });
+    } catch {
+      toast.error('Google login failed');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 py-16 relative overflow-hidden bg-gradient-to-br from-[#F1FAEE] via-[#A8DADC]/40 to-[#457B9D]/30">
+
+      {/* Blobs */}
+      <motion.div
+        animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.6, 0.4] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-[480px] h-[480px] rounded-full pointer-events-none"
+        style={{
+          top: '-10%', left: '-8%',
+          background: 'radial-gradient(circle, rgba(69,123,157,0.3) 0%, transparent 70%)',
+          filter: 'blur(40px)',
+        }}
+      />
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        className="absolute w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{
+          bottom: '-8%', right: '-6%',
+          background: 'radial-gradient(circle, rgba(230,57,70,0.2) 0%, transparent 70%)',
+          filter: 'blur(50px)',
+        }}
+      />
+
+      {/* Card */}
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformPerspective: 3000 }}
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 w-full max-w-md rounded-3xl p-8 border border-[#A8DADC]/30 bg-white shadow-[0_30px_80px_rgba(29,53,87,0.2)] will-change-transform"
+      >
+        {/* Top accent */}
+        <div className="absolute top-0 left-8 right-8 h-[3px] rounded-b-full bg-gradient-to-r from-[#1D3557] via-[#E63946] to-[#A8DADC]" />
+
+        {/* Header */}
+        <div className="text-center mb-8 mt-2">
+          <motion.div
+            initial={{ scale: 0, rotate: -20 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.15 }}
+            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 bg-gradient-to-br from-[#1D3557] to-[#457B9D] shadow-lg"
+          >
+            <span className="text-lg font-black text-white">SN</span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="text-3xl font-extrabold text-[#1D3557] mb-1"
+          >
+            Welcome Back
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.32 }}
+            className="text-[#457B9D] text-sm"
+          >
+            Sign in to your{' '}
+            <span className="font-bold text-[#E63946]">StudyNook</span> account
+          </motion.p>
+        </div>
+
+        {/* Error */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="mb-5 px-4 py-3 rounded-2xl text-sm text-center font-medium bg-[#E63946]/10 border border-[#E63946]/20 text-[#E63946]"
+            >
+              {error}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-5">
+          <FloatingInput
+            id="email"
+            label="Email Address"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            icon={MdEmail}
+          />
+          <FloatingInput
+            id="password"
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            icon={MdLock}
+            extra={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-[#457B9D] hover:text-[#1D3557] transition-colors"
+              >
+                {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+              </button>
+            }
+          />
+
+          <motion.button
+            type="submit"
+            disabled={loading}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-[#1D3557] to-[#457B9D] hover:shadow-[0_12px_32px_rgba(29,53,87,0.4)] transition-all duration-300 disabled:opacity-60"
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                Signing in...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Sign In <HiArrowRight size={18} />
+              </span>
+            )}
+          </motion.button>
+        </form>
+
+        {/* Divider */}
+        <div className="flex items-center gap-3 my-6">
+          <div className="flex-1 h-px bg-[#A8DADC]/60" />
+          <span className="text-xs text-[#457B9D] tracking-widest uppercase font-medium">or continue with</span>
+          <div className="flex-1 h-px bg-[#A8DADC]/60" />
+        </div>
+
+        {/* Google */}
+        <motion.button
+          onClick={handleGoogle}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          className="w-full flex items-center justify-center gap-3 border border-[#A8DADC] bg-white text-[#1D3557] py-3.5 rounded-2xl font-semibold text-sm hover:border-[#457B9D] hover:bg-[#F1FAEE] transition-all duration-300"
+        >
+          <FcGoogle size={20} />
+          Continue with Google
+        </motion.button>
+
+        <p className="text-center text-sm text-[#457B9D] mt-6">
+          Don&apos;t have an account?{' '}
+          <Link href="/register" className="font-bold text-[#E63946] hover:text-[#1D3557] transition-colors">
+            Register
+          </Link>
+        </p>
+      </motion.div>
+    </div>
+  );
 }
