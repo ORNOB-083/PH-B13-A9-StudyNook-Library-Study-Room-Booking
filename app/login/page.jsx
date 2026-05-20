@@ -117,8 +117,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16 relative overflow-hidden bg-gradient-to-br from-[#F1FAEE] via-[#A8DADC]/40 to-[#457B9D]/30">
-
-      {/* Blobs */}
+        
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.6, 0.4] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
@@ -140,7 +139,7 @@ export default function LoginPage() {
         }}
       />
 
-      {/* Card */}
+
       <motion.div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -151,10 +150,8 @@ export default function LoginPage() {
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 w-full max-w-md rounded-3xl p-8 border border-[#A8DADC]/30 bg-white shadow-[0_30px_80px_rgba(29,53,87,0.2)] will-change-transform"
       >
-        {/* Top accent */}
         <div className="absolute top-0 left-8 right-8 h-[3px] rounded-b-full bg-gradient-to-r from-[#1D3557] via-[#E63946] to-[#A8DADC]" />
 
-        {/* Header */}
         <div className="text-center mb-8 mt-2">
           <motion.div
             initial={{ scale: 0, rotate: -20 }}
@@ -183,7 +180,6 @@ export default function LoginPage() {
           </motion.p>
         </div>
 
-        {/* Error */}
         <AnimatePresence>
           {error && (
             <motion.div
@@ -197,7 +193,6 @@ export default function LoginPage() {
           )}
         </AnimatePresence>
 
-        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           <FloatingInput
             id="email"
@@ -248,14 +243,12 @@ export default function LoginPage() {
           </motion.button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center gap-3 my-6">
           <div className="flex-1 h-px bg-[#A8DADC]/60" />
           <span className="text-xs text-[#457B9D] tracking-widest uppercase font-medium">or continue with</span>
           <div className="flex-1 h-px bg-[#A8DADC]/60" />
         </div>
 
-        {/* Google */}
         <motion.button
           onClick={handleGoogle}
           whileHover={{ scale: 1.02 }}
