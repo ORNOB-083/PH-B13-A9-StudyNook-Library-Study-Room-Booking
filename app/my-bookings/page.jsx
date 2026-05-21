@@ -37,7 +37,6 @@ export default function MyBookingsPage() {
         Promise.resolve().then(() => fetchBookings());
     }, [user?.email]);
 
-
     const handleCancel = async () => {
         setCancelling(true);
         try {
@@ -125,20 +124,21 @@ export default function MyBookingsPage() {
                         </a>
                     </motion.div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {bookings.map((booking, i) => (
                             <motion.div
                                 key={booking._id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.08 }}
-                                className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#A8DADC]/20 flex flex-col"
+                                whileHover={{ y: -8 }}
+                                className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-[#A8DADC]/30 flex flex-col"
                             >
                                 <div className="relative h-40 overflow-hidden">
                                     <img
                                         src={booking.roomImage || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800'}
                                         alt={booking.roomName}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#1D3557]/60 to-transparent" />
 
@@ -153,8 +153,8 @@ export default function MyBookingsPage() {
                                     </div>
                                 </div>
 
-                                <div className="p-5 flex flex-col flex-1">
-                                    <h3 className="text-base font-bold text-[#1D3557] mb-3 flex items-center gap-2">
+                                <div className="p-6 flex flex-col flex-1">
+                                    <h3 className="text-base font-bold text-[#1D3557] mb-3 flex items-center gap-2 hover:text-[#E63946] transition-colors duration-200">
                                         <MdMeetingRoom className="text-[#457B9D]" />
                                         {booking.roomName}
                                     </h3>
@@ -188,7 +188,7 @@ export default function MyBookingsPage() {
                                                 whileHover={{ scale: 1.02 }}
                                                 whileTap={{ scale: 0.97 }}
                                                 onClick={() => setCancelModal(booking)}
-                                                className="w-full py-2.5 rounded-xl text-sm font-bold text-[#E63946] border border-[#E63946]/30 hover:bg-[#E63946] hover:text-white transition-all duration-300"
+                                                className="w-full py-2.5 rounded-xl text-sm font-bold text-[#E63946] border border-[#E63946]/30 hover:bg-[#E63946] hover:text-white transition-colors duration-200"
                                             >
                                                 Cancel Booking
                                             </motion.button>
