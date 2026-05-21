@@ -152,7 +152,9 @@ export default function MyListingsPage() {
                         aria-label="Loading your listings"
                         data-testid="loader"
                     />
-                    <p className="text-[#457B9D] font-medium animate-pulse">Loading your listings...</p>
+                    <p className="text-[#457B9D] font-medium animate-pulse">
+                        Loading your listings...
+                    </p>
                 </div>
             </motion.div>
         );
@@ -379,6 +381,110 @@ export default function MyListingsPage() {
                             </div>
 
                             <form onSubmit={handleUpdate} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+
+                                <div>
+                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Room Name</p>
+                                    <div className={`flex items-center gap-3 rounded-2xl px-4 py-3 border bg-white transition-all duration-300 focus-within:border-[#1D3557] border-[#A8DADC]/50`}>
+                                        <MdMeetingRoom className="text-[#457B9D]" size={18} />
+                                        <input
+                                            value={editForm.name}
+                                            onChange={e => setEditForm({ ...editForm, name: e.target.value })}
+                                            required
+                                            className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
+                                            placeholder="Room name"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Description</p>
+                                    <div className={`flex gap-3 rounded-2xl px-4 py-3 border bg-white transition-all duration-300 focus-within:border-[#1D3557] border-[#A8DADC]/50`}>
+                                        <HiDocumentText className="text-[#457B9D] mt-0.5 shrink-0" size={18} />
+                                        <textarea
+                                            value={editForm.description}
+                                            onChange={e => setEditForm({ ...editForm, description: e.target.value })}
+                                            required
+                                            rows={3}
+                                            className="w-full bg-transparent text-sm text-[#1D3557] outline-none resize-none"
+                                            placeholder="Description"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Image URL</p>
+                                    <div className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
+                                        <HiPhotograph className="text-[#457B9D]" size={18} />
+                                        <input
+                                            value={editForm.image}
+                                            onChange={e => setEditForm({ ...editForm, image: e.target.value })}
+                                            className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
+                                            placeholder="Image URL"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-3 gap-3">
+                                    <div>
+                                        <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Floor</p>
+                                        <div className="flex items-center gap-2 rounded-2xl px-3 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
+                                            <HiOfficeBuilding className="text-[#457B9D] shrink-0" size={16} />
+                                            <input
+                                                value={editForm.floor}
+                                                onChange={e => setEditForm({ ...editForm, floor: e.target.value })}
+                                                className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
+                                                placeholder="Floor"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Capacity</p>
+                                        <div className="flex items-center gap-2 rounded-2xl px-3 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
+                                            <HiUsers className="text-[#457B9D] shrink-0" size={16} />
+                                            <input
+                                                type="number"
+                                                value={editForm.capacity}
+                                                onChange={e => setEditForm({ ...editForm, capacity: e.target.value })}
+                                                className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
+                                                placeholder="Cap"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Rate $</p>
+                                        <div className="flex items-center gap-2 rounded-2xl px-3 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
+                                            <HiCurrencyDollar className="text-[#457B9D] shrink-0" size={16} />
+                                            <input
+                                                type="number"
+                                                value={editForm.hourlyRate}
+                                                onChange={e => setEditForm({ ...editForm, hourlyRate: e.target.value })}
+                                                className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
+                                                placeholder="Rate"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-3">Amenities</p>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {AMENITIES.map(({ label, icon }) => (
+                                            <button
+                                                key={label}
+                                                type="button"
+                                                onClick={() => toggleEditAmenity(label)}
+                                                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition-all duration-200 ${editAmenities.includes(label)
+                                                    ? 'bg-[#1D3557] text-white border-[#1D3557]'
+                                                    : 'bg-white text-[#457B9D] border-[#A8DADC]/50 hover:border-[#457B9D]'
+                                                    }`}
+                                            >
+                                                <span>{icon}</span> {label}
+                                                {editAmenities.includes(label) && <span className="ml-auto text-[#A8DADC]">✓</span>}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 <motion.button
                                     type="submit"
                                     disabled={updating}
