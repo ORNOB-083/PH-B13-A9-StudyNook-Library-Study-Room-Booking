@@ -117,7 +117,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16 relative overflow-hidden bg-gradient-to-br from-[#F1FAEE] via-[#A8DADC]/40 to-[#457B9D]/30">
-        
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.6, 0.4] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
