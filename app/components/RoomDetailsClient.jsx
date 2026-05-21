@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -39,17 +40,14 @@ export default function RoomDetailsClient({ room: initialRoom }) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
 
-  // Booking state
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [note, setNote] = useState('');
   const [booking, setBooking] = useState(false);
 
-  // Delete state
   const [deleting, setDeleting] = useState(false);
 
-  // Edit state
   const [editForm, setEditForm] = useState({
     name: room.name,
     description: room.description,
@@ -171,7 +169,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
   return (
     <div className="min-h-screen bg-[#F1FAEE]">
 
-      {/* Hero Image */}
       <div className="relative h-72 md:h-96 overflow-hidden">
         <img src={room.image} alt={room.name} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1D3557]/80 to-transparent" />
@@ -190,7 +187,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
           </div>
         </div>
 
-        {/* Owner Edit/Delete buttons on image */}
         {isOwner && (
           <div className="absolute top-4 right-4 flex gap-2">
             <motion.button
@@ -215,10 +211,8 @@ export default function RoomDetailsClient({ room: initialRoom }) {
 
       <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        {/* Left */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* Description */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -229,7 +223,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
             <p className="text-[#457B9D] leading-relaxed">{room.description}</p>
           </motion.div>
 
-          {/* Details Grid */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -254,7 +247,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
             </div>
           </motion.div>
 
-          {/* Amenities */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -276,10 +268,8 @@ export default function RoomDetailsClient({ room: initialRoom }) {
           </motion.div>
         </div>
 
-        {/* Right — Booking + Owner */}
         <div className="lg:col-span-1 space-y-4">
 
-          {/* Booking Card */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -310,7 +300,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
             </div>
           </motion.div>
 
-          {/* Listed By */}
           {room.owner && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -337,7 +326,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
         </div>
       </div>
 
-      {/* ── Booking Modal ── */}
       <AnimatePresence>
         {bookingModal && (
           <motion.div
@@ -365,7 +353,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
               </div>
 
               <form onSubmit={handleBookingSubmit} className="space-y-4">
-                {/* Date */}
                 <div>
                   <label className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2 block">Date</label>
                   <div className="flex items-center gap-3 bg-[#F1FAEE] border border-[#A8DADC]/40 rounded-2xl px-4 py-3 focus-within:border-[#457B9D] transition">
@@ -381,7 +368,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </div>
                 </div>
 
-                {/* Start Time */}
                 <div>
                   <label className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2 block">Start Time</label>
                   <select
@@ -395,7 +381,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </select>
                 </div>
 
-                {/* End Time */}
                 <div>
                   <label className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2 block">End Time</label>
                   <select
@@ -410,7 +395,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </select>
                 </div>
 
-                {/* Total Cost */}
                 <AnimatePresence>
                   {totalCost > 0 && (
                     <motion.div
@@ -425,7 +409,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   )}
                 </AnimatePresence>
 
-                {/* Note */}
                 <div>
                   <label className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2 block">Special Note (optional)</label>
                   <textarea
@@ -460,7 +443,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
         )}
       </AnimatePresence>
 
-      {/* ── Delete Modal ── */}
       <AnimatePresence>
         {deleteModal && (
           <motion.div
@@ -517,7 +499,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
         )}
       </AnimatePresence>
 
-      {/* ── Edit Modal ── */}
       <AnimatePresence>
         {editModal && (
           <motion.div
@@ -546,7 +527,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
 
               <form onSubmit={handleUpdate} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
 
-                {/* Name */}
                 <div>
                   <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Room Name</p>
                   <div className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
@@ -555,7 +535,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </div>
                 </div>
 
-                {/* Description */}
                 <div>
                   <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Description</p>
                   <div className="flex gap-3 rounded-2xl px-4 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
@@ -564,7 +543,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </div>
                 </div>
 
-                {/* Image */}
                 <div>
                   <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Image URL</p>
                   <div className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
@@ -573,7 +551,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </div>
                 </div>
 
-                {/* Floor + Capacity + Rate */}
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Floor</p>
@@ -598,7 +575,6 @@ export default function RoomDetailsClient({ room: initialRoom }) {
                   </div>
                 </div>
 
-                {/* Amenities */}
                 <div>
                   <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-3">Amenities</p>
                   <div className="grid grid-cols-2 gap-2">

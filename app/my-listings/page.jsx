@@ -208,52 +208,63 @@ export default function MyListingsPage() {
                         </Link>
                     </motion.div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {rooms.map((room, i) => (
                             <motion.div
                                 key={room._id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.08 }}
-                                className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#A8DADC]/20 flex flex-col"
+                                whileHover={{ y: -8 }}
+                                className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-[#A8DADC]/30 flex flex-col"
                             >
-                                <div className="relative h-44 overflow-hidden">
+                                <div className="relative h-52 overflow-hidden">
                                     <img
                                         src={room.image}
                                         alt={room.name}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#1D3557]/50 to-transparent" />
-                                    <div className="absolute top-3 right-3 bg-[#1D3557] text-white text-xs font-bold px-3 py-1 rounded-full">
+                                    <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-[#1D3557] text-sm font-bold px-4 py-2 rounded-2xl shadow">
                                         ${room.hourlyRate}/hr
                                     </div>
                                 </div>
 
-                                <div className="p-5 flex flex-col flex-1">
-                                    <h3 className="text-base font-bold text-[#1D3557] mb-1 line-clamp-1">{room.name}</h3>
-                                    <p className="text-sm text-[#457B9D] line-clamp-2 mb-3">{room.description}</p>
+                                <div className="p-6 flex flex-col flex-1">
+                                    <h3 className="text-xl font-bold text-[#1D3557] mb-2 line-clamp-2 hover:text-[#E63946] transition-colors duration-200">
+                                        {room.name}
+                                    </h3>
+                                    <p className="text-[#457B9D] text-sm leading-relaxed mb-5 line-clamp-3 flex-1">
+                                        {room.description}
+                                    </p>
 
-                                    <div className="flex items-center gap-4 text-xs text-[#457B9D] mb-3">
-                                        <span className="flex items-center gap-1">
-                                            <HiLocationMarker className="text-[#E63946]" /> {room.floor}
+                                    <div className="flex items-center gap-5 text-sm text-[#457B9D] mb-6">
+                                        <span className="flex items-center gap-1.5">
+                                            <HiLocationMarker className="text-[#E63946]" size={18} />
+                                            {room.floor}
                                         </span>
-                                        <span className="flex items-center gap-1">
-                                            <HiUsers className="text-[#E63946]" /> {room.capacity} people
+                                        <span className="flex items-center gap-1.5">
+                                            <HiUsers className="text-[#E63946]" size={18} />
+                                            Up to {room.capacity}
                                         </span>
-                                        <span className="flex items-center gap-1">
-                                            <MdMeetingRoom className="text-[#E63946]" /> {room.bookingCount} bookings
+                                        <span className="flex items-center gap-1.5">
+                                            <MdMeetingRoom className="text-[#E63946]" size={18} />
+                                            {room.bookingCount} bookings
                                         </span>
                                     </div>
 
-                                    <div className="flex flex-wrap gap-1.5 mb-4">
+                                    <div className="flex flex-wrap gap-2 mb-6">
                                         {room.amenities?.slice(0, 3).map((a, i) => (
-                                            <span key={i} className="text-xs bg-[#A8DADC]/20 text-[#457B9D] border border-[#A8DADC]/40 px-2 py-0.5 rounded-full">
+                                            <span
+                                                key={i}
+                                                className="text-xs bg-[#F1FAEE] text-[#457B9D] px-3 py-1.5 rounded-xl border border-[#A8DADC]/30"
+                                            >
                                                 {a}
                                             </span>
                                         ))}
                                         {room.amenities?.length > 3 && (
-                                            <span className="text-xs bg-[#1D3557]/10 text-[#1D3557] px-2 py-0.5 rounded-full">
-                                                +{room.amenities.length - 3}
+                                            <span className="text-xs bg-[#1D3557]/5 text-[#1D3557] px-3 py-1.5 rounded-xl">
+                                                +{room.amenities.length - 3} more
                                             </span>
                                         )}
                                     </div>
@@ -263,17 +274,17 @@ export default function MyListingsPage() {
                                             whileHover={{ scale: 1.03 }}
                                             whileTap={{ scale: 0.97 }}
                                             onClick={() => openEditModal(room)}
-                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#457B9D] text-[#457B9D] text-sm font-semibold hover:bg-[#457B9D] hover:text-white transition-all duration-300"
+                                            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-[#457B9D] text-[#457B9D] text-sm font-semibold hover:bg-[#457B9D] hover:text-white transition-colors duration-200"
                                         >
-                                            <HiPencil size={14} /> Edit
+                                            <HiPencil size={16} /> Edit
                                         </motion.button>
                                         <motion.button
                                             whileHover={{ scale: 1.03 }}
                                             whileTap={{ scale: 0.97 }}
                                             onClick={() => setDeleteModal(room)}
-                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#E63946]/30 text-[#E63946] text-sm font-semibold hover:bg-[#E63946] hover:text-white transition-all duration-300"
+                                            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-[#E63946]/30 text-[#E63946] text-sm font-semibold hover:bg-[#E63946] hover:text-white transition-colors duration-200"
                                         >
-                                            <HiTrash size={14} /> Delete
+                                            <HiTrash size={16} /> Delete
                                         </motion.button>
                                     </div>
                                 </div>
@@ -368,110 +379,6 @@ export default function MyListingsPage() {
                             </div>
 
                             <form onSubmit={handleUpdate} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
-
-                                <div>
-                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Room Name</p>
-                                    <div className={`flex items-center gap-3 rounded-2xl px-4 py-3 border bg-white transition-all duration-300 focus-within:border-[#1D3557] border-[#A8DADC]/50`}>
-                                        <MdMeetingRoom className="text-[#457B9D]" size={18} />
-                                        <input
-                                            value={editForm.name}
-                                            onChange={e => setEditForm({ ...editForm, name: e.target.value })}
-                                            required
-                                            className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
-                                            placeholder="Room name"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Description</p>
-                                    <div className={`flex gap-3 rounded-2xl px-4 py-3 border bg-white transition-all duration-300 focus-within:border-[#1D3557] border-[#A8DADC]/50`}>
-                                        <HiDocumentText className="text-[#457B9D] mt-0.5 shrink-0" size={18} />
-                                        <textarea
-                                            value={editForm.description}
-                                            onChange={e => setEditForm({ ...editForm, description: e.target.value })}
-                                            required
-                                            rows={3}
-                                            className="w-full bg-transparent text-sm text-[#1D3557] outline-none resize-none"
-                                            placeholder="Description"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Image URL</p>
-                                    <div className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
-                                        <HiPhotograph className="text-[#457B9D]" size={18} />
-                                        <input
-                                            value={editForm.image}
-                                            onChange={e => setEditForm({ ...editForm, image: e.target.value })}
-                                            className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
-                                            placeholder="Image URL"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-3 gap-3">
-                                    <div>
-                                        <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Floor</p>
-                                        <div className="flex items-center gap-2 rounded-2xl px-3 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
-                                            <HiOfficeBuilding className="text-[#457B9D] shrink-0" size={16} />
-                                            <input
-                                                value={editForm.floor}
-                                                onChange={e => setEditForm({ ...editForm, floor: e.target.value })}
-                                                className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
-                                                placeholder="Floor"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Capacity</p>
-                                        <div className="flex items-center gap-2 rounded-2xl px-3 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
-                                            <HiUsers className="text-[#457B9D] shrink-0" size={16} />
-                                            <input
-                                                type="number"
-                                                value={editForm.capacity}
-                                                onChange={e => setEditForm({ ...editForm, capacity: e.target.value })}
-                                                className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
-                                                placeholder="Cap"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Rate $</p>
-                                        <div className="flex items-center gap-2 rounded-2xl px-3 py-3 border border-[#A8DADC]/50 bg-white focus-within:border-[#1D3557] transition">
-                                            <HiCurrencyDollar className="text-[#457B9D] shrink-0" size={16} />
-                                            <input
-                                                type="number"
-                                                value={editForm.hourlyRate}
-                                                onChange={e => setEditForm({ ...editForm, hourlyRate: e.target.value })}
-                                                className="w-full bg-transparent text-sm text-[#1D3557] outline-none"
-                                                placeholder="Rate"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-3">Amenities</p>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        {AMENITIES.map(({ label, icon }) => (
-                                            <button
-                                                key={label}
-                                                type="button"
-                                                onClick={() => toggleEditAmenity(label)}
-                                                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition-all duration-200 ${editAmenities.includes(label)
-                                                    ? 'bg-[#1D3557] text-white border-[#1D3557]'
-                                                    : 'bg-white text-[#457B9D] border-[#A8DADC]/50 hover:border-[#457B9D]'
-                                                    }`}
-                                            >
-                                                <span>{icon}</span> {label}
-                                                {editAmenities.includes(label) && <span className="ml-auto text-[#A8DADC]">✓</span>}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
                                 <motion.button
                                     type="submit"
                                     disabled={updating}
