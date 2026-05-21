@@ -17,7 +17,7 @@ function FloatingInput({ id, label, type = 'text', value, onChange, icon: Icon, 
     <div className="relative">
       <label
         htmlFor={id}
-        className={`relative flex items-center gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white cursor-text transition-all duration-300 ${
+        className={`relative flex items-center gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white cursor-text transition-all duration-300 overflow-hidden ${
           focused
             ? 'border-[#1D3557] shadow-md'
             : 'border-[#A8DADC]/50 hover:border-[#457B9D]/70 hover:shadow-sm'
@@ -37,7 +37,7 @@ function FloatingInput({ id, label, type = 'text', value, onChange, icon: Icon, 
                 : { y: 2, scale: 1, color: '#94a3b8' }
             }
             transition={{ type: 'spring', stiffness: 280, damping: 25 }}
-            className="absolute left-0 text-sm font-medium pointer-events-none select-none origin-left"
+            className="absolute left-0 text-sm font-medium pointer-events-none select-none origin-left z-10"
           >
             {label}
           </motion.span>
@@ -49,12 +49,12 @@ function FloatingInput({ id, label, type = 'text', value, onChange, icon: Icon, 
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             required
-            className="w-full bg-transparent text-base text-[#1D3557] outline-none pt-5 font-medium caret-[#1D3557]"
+            className="w-full bg-transparent text-base text-[#1D3557] outline-none pt-6 pb-1 font-medium caret-[#1D3557] cursor-text relative z-20"
             placeholder=" "
           />
         </div>
         {extra && (
-          <div className="shrink-0" onClick={e => e.stopPropagation()}>
+          <div className="shrink-0 z-30" onClick={e => e.stopPropagation()}>
             {extra}
           </div>
         )}
@@ -137,8 +137,7 @@ export default function LoginPage() {
           filter: 'blur(50px)',
         }}
       />
-
-
+      
       <motion.div
         ref={cardRef}
         onMouseMove={handleMouseMove}
