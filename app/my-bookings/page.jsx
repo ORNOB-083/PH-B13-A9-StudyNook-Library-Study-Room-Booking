@@ -19,9 +19,15 @@ export default function MyBookingsPage() {
 
     const fetchBookings = async () => {
         setLoading(true);
+        const { data: tokenData } = await authClient.token();
         try {
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/bookings/user/${user.email}`
+                `${process.env.NEXT_PUBLIC_API_URL}/bookings/user/${user.email}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${tokenData?.token}`,
+                    },
+                }
             );
             const data = await res.json();
             setBookings(data);
@@ -39,10 +45,16 @@ export default function MyBookingsPage() {
 
     const handleCancel = async () => {
         setCancelling(true);
+        const { data: tokenData } = await authClient.token();
         try {
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/bookings/${cancelModal._id}/cancel`,
-                { method: 'PATCH' }
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${tokenData?.token}`,
+                    },
+                }
             );
             const data = await res.json();
             if (!res.ok) return toast.error(data.error || 'Cancellation failed');

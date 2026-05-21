@@ -79,10 +79,14 @@ export default function RoomDetailsClient({ room: initialRoom }) {
     e.preventDefault();
     if (!date || !startTime || !endTime) return toast.error('Please fill all fields');
     setBooking(true);
+    const { data: tokenData } = await authClient.token();
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenData?.token}`,
+        },
         credentials: 'include',
         body: JSON.stringify({
           roomId: room._id,
@@ -114,8 +118,12 @@ export default function RoomDetailsClient({ room: initialRoom }) {
   const handleDelete = async () => {
     setDeleting(true);
     try {
+      const { data: tokenData } = await authClient.token();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${room._id}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${tokenData?.token}`,
+        },
       });
       const data = await res.json();
       if (!res.ok) return toast.error(data.error || 'Delete failed');
@@ -138,10 +146,14 @@ export default function RoomDetailsClient({ room: initialRoom }) {
     e.preventDefault();
     if (editAmenities.length === 0) return toast.error('Select at least one amenity');
     setUpdating(true);
+    const { data: tokenData } = await authClient.token();
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${room._id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenData?.token}`,
+        },
         body: JSON.stringify({
           ...editForm,
           capacity: Number(editForm.capacity),
