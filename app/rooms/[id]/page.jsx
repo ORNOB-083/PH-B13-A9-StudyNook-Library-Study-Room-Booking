@@ -1,16 +1,14 @@
 import RoomDetailsClient from '../../components/RoomDetailsClient';
 
-async function getRoom(id) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`, { cache: 'no-store' });
-  if (!res.ok) return null;
-  return res.json();
-}
-
 export default async function RoomDetailsPage({ params }) {
+  async function getRoom(id) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return res.json();
+  }
   const { id } = await params;
-  
   const room = await getRoom(id);
-  
+
   if (!room) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F1FAEE]">
@@ -22,6 +20,6 @@ export default async function RoomDetailsPage({ params }) {
       </div>
     );
   }
-  
+
   return <RoomDetailsClient room={room} />;
 }

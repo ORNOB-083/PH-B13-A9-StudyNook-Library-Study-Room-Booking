@@ -27,17 +27,15 @@ function FloatingInput({ id, label, type = 'text', value, onChange, icon: Icon, 
   return (
     <label
       htmlFor={id}
-      className={`relative flex items-center gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white cursor-text transition-all duration-300 ${
-        focused
+      className={`relative flex items-center gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white cursor-text transition-all duration-300 ${focused
           ? 'border-[#1D3557] shadow-md'
           : 'border-[#A8DADC]/50 hover:border-[#457B9D]/70 hover:shadow-sm'
-      }`}
+        }`}
     >
       <Icon
         size={20}
-        className={`shrink-0 transition-colors duration-300 mt-0.5 ${
-          focused ? 'text-[#1D3557]' : 'text-[#457B9D]'
-        }`}
+        className={`shrink-0 transition-colors duration-300 mt-0.5 ${focused ? 'text-[#1D3557]' : 'text-[#457B9D]'
+          }`}
       />
       <div className="flex-1 relative min-w-0">
         <motion.span
@@ -97,9 +95,13 @@ export default function AddRoomPage() {
     if (selectedAmenities.length === 0) return toast.error('Please select at least one amenity');
     setLoading(true);
     try {
+      const { data: tokenData } = await authClient.token()
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `Bearer ${tokenData?.token}`
+        },
         credentials: 'include',
         body: JSON.stringify({
           ...form,
@@ -186,16 +188,14 @@ export default function AddRoomPage() {
 
             <div>
               <p className="text-xs font-bold text-[#1D3557] uppercase tracking-widest mb-2">Description</p>
-              <div className={`relative flex gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white transition-all duration-300 ${
-                descFocused
+              <div className={`relative flex gap-3 rounded-2xl px-5 pt-5 pb-4 border bg-white transition-all duration-300 ${descFocused
                   ? 'border-[#1D3557] shadow-md'
                   : 'border-[#A8DADC]/50 hover:border-[#457B9D]/70'
-              }`}>
+                }`}>
                 <HiDocumentText
                   size={20}
-                  className={`shrink-0 mt-1 transition-colors duration-300 ${
-                    descFocused ? 'text-[#1D3557]' : 'text-[#457B9D]'
-                  }`}
+                  className={`shrink-0 mt-1 transition-colors duration-300 ${descFocused ? 'text-[#1D3557]' : 'text-[#457B9D]'
+                    }`}
                 />
                 <textarea
                   id="description"
@@ -287,11 +287,10 @@ export default function AddRoomPage() {
                     onClick={() => toggleAmenity(label)}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-2xl border text-sm font-medium transition-all duration-200 ${
-                      selectedAmenities.includes(label)
+                    className={`flex items-center gap-2 px-4 py-3 rounded-2xl border text-sm font-medium transition-all duration-200 ${selectedAmenities.includes(label)
                         ? 'bg-[#1D3557] text-white border-[#1D3557] shadow-md'
                         : 'bg-white text-[#457B9D] border-[#A8DADC]/50 hover:border-[#457B9D]'
-                    }`}
+                      }`}
                   >
                     <span>{icon}</span>
                     {label}

@@ -40,11 +40,17 @@ export default function MyListingsPage() {
         await Promise.resolve();
         setLoading(true);
         try {
+            const { data: tokenData } = await authClient.token();
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/rooms/owner/${user.email}`
+                `${process.env.NEXT_PUBLIC_API_URL}/rooms/owner/${user.email}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${tokenData?.token}`,
+                    },
+                }
             );
             const data = await res.json();
-            setRooms(data);
+            setRooms(Array.isArray(data) ? data : []);
         } catch {
             toast.error('Failed to fetch listings');
         } finally {
@@ -70,10 +76,16 @@ export default function MyListingsPage() {
 
     const handleDelete = async () => {
         setDeleting(true);
+        const { data: tokenData } = await authClient.token();
         try {
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/rooms/${deleteModal._id}`,
-                { method: 'DELETE' }
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${tokenData?.token}`,
+                    },
+                }
             );
             const data = await res.json();
             if (!res.ok) return toast.error(data.error || 'Delete failed');
@@ -111,11 +123,16 @@ export default function MyListingsPage() {
         if (editAmenities.length === 0) return toast.error('Select at least one amenity');
         setUpdating(true);
         try {
+            const { data: tokenData } = await authClient.token();
             const res = await fetch(
+
                 `${process.env.NEXT_PUBLIC_API_URL}/rooms/${editModal._id}`,
                 {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${tokenData?.token}`,
+                    },
                     body: JSON.stringify({
                         ...editForm,
                         capacity: Number(editForm.capacity),
