@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,12 +15,7 @@ export default function MyBookingsPage() {
   const [loading, setLoading] = useState(true);
   const [cancelModal, setCancelModal] = useState(null);
   const [cancelling, setCancelling] = useState(false);
-
-  useEffect(() => {
-    if (!user?.email) return;
-    fetchBookings();
-  }, [user]);
-
+  
   const fetchBookings = async () => {
     setLoading(true);
     try {
@@ -34,6 +30,13 @@ export default function MyBookingsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!user?.email) return;
+    // defer to avoid synchronous setState inside effect
+    Promise.resolve().then(() => fetchBookings());
+  }, [user?.email]);
+
 
   const handleCancel = async () => {
     setCancelling(true);
@@ -167,7 +170,7 @@ export default function MyBookingsPage() {
 
                   {booking.note && (
                     <p className="text-xs text-[#457B9D]/70 bg-[#F1FAEE] rounded-xl px-3 py-2 mb-4 italic">
-                      "{booking.note}"
+                      &quot;{booking.note}&quot;
                     </p>
                   )}
 
