@@ -11,6 +11,7 @@ import {
     HiOfficeBuilding, HiDocumentText
 } from 'react-icons/hi';
 import { MdMeetingRoom } from 'react-icons/md';
+import { SyncLoader } from 'react-spinners';
 
 const AMENITIES = [
     { label: 'Whiteboard', icon: '📋' },
@@ -137,12 +138,23 @@ export default function MyListingsPage() {
 
     if (isPending || loading) {
         return (
-            <div className="min-h-screen bg-[#F1FAEE] flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-[#1D3557] border-t-transparent rounded-full animate-spin" />
-                    <p className="text-[#457B9D] font-medium">Loading your listings...</p>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className="min-h-screen bg-[#F1FAEE] flex items-center justify-center"
+            >
+                <div className="flex flex-col items-center gap-5">
+                    <SyncLoader
+                        color="#1D3557"
+                        size={14}
+                        margin={8}
+                        aria-label="Loading your listings"
+                        data-testid="loader"
+                    />
+                    <p className="text-[#457B9D] font-medium animate-pulse">Loading your listings...</p>
                 </div>
-            </div>
+            </motion.div>
         );
     }
 
