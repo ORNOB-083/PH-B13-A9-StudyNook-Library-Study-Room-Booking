@@ -1,6 +1,6 @@
 # StudyNook 📚
 
-**Live Site:** [https://study-nook-083.vercel.app](study-nook)
+**Live Site:** [study-nook](https://study-nook-083.vercel.app)
 
 A full-stack web application where students and library users can discover, book, and manage study rooms — and list their own spaces to earn.
 
