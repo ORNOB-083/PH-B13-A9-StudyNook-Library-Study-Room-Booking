@@ -13,7 +13,6 @@ A full-stack web application where students and library users can discover, book
 - 📅 **Smart Booking System** — Book rooms by date and time slot with automatic conflict detection and real-time total cost calculation
 - 🛠️ **Full Room Management** — Authenticated users can add, edit, and delete their own room listings with image preview support
 - 📋 **Personal Dashboard** — Track all your bookings and listings with status badges, cancellation support, and booking history
-- 🌗 **Dark / Light Theme** — Toggle between themes with preference saved to localStorage for a personalized experience
 - 🔍 **Search & Filter** — Filter rooms by amenities and max hourly rate with animated results and empty state handling
 - 📱 **Fully Responsive** — Optimized for mobile, tablet, and desktop with a consistent and polished UI across all screen sizes
 

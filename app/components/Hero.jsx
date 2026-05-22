@@ -1,9 +1,22 @@
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { HiArrowRight, HiBookOpen, HiStar, HiUsers } from 'react-icons/hi';
+import { authClient } from '../../lib/auth-client'; 
 
 export default function Hero() {
+  const router = useRouter();
+  const { data: session } = authClient.useSession(); 
+
+  const handleListRoom = () => {
+    if (session?.user) {
+      router.push('/my-bookings');
+    } else {
+      router.push('/login');       
+    }
+  };
+
   return (
     <section
       className="relative min-h-screen md:min-h-[90vh] flex items-center justify-center overflow-hidden"
@@ -82,10 +95,13 @@ export default function Hero() {
             Explore Rooms
             <HiArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
           </Link>
-          <Link href="/register"
-            className="flex items-center justify-center gap-2 border-2 border-[#A8DADC] text-[#A8DADC] px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl font-semibold backdrop-blur-sm hover:bg-[#A8DADC] hover:text-[#1D3557] hover:border-transparent transition-all duration-300 w-full sm:w-auto min-w-[200px] text-sm sm:text-base">
+
+          <button
+            onClick={handleListRoom}
+            className="flex items-center justify-center gap-2 border-2 border-[#A8DADC] text-[#A8DADC] px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl font-semibold backdrop-blur-sm hover:bg-[#A8DADC] hover:text-[#1D3557] hover:border-transparent transition-all duration-300 w-full sm:w-auto min-w-[200px] text-sm sm:text-base"
+          >
             List Your Room
-          </Link>
+          </button>
         </motion.div>
 
         <motion.div
@@ -112,7 +128,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Bottom fade - hidden on very small screens if needed */}
       <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 bg-gradient-to-t from-[#F1FAEE] to-transparent pointer-events-none" />
     </section>
   );
